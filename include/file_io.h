@@ -1,0 +1,12 @@
+#ifndef IO_H
+#define IO_H
+
+#include <stdio.h>
+#include "queue.h"
+
+int read_line(FILE* f, char** out_line);
+int queue_from_line(Queue* q, const char* line);
+void write_queue_line(FILE* f, const Queue* q);
+void chomp(char* s);
+
+#endif

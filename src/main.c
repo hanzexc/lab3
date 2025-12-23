@@ -5,12 +5,17 @@
 #include "queue.h"
 #include "sort.h"
 #include "file_io.h"
+#include "benchmark.h"
 
-int main(int argument_counter, char* argument_vector[]) {
+int main(int argc, char* argv[]) {
+    if (argc == 4 && strcmp(argv[1], "--benchmark") == 0) {
+        return run_benchmark(argv[2], argv[3]) ? 0 : 1;
+    }
+
     const char* filename = NULL;
 
-    if (argument_counter == 3 && strcmp(argument_vector[1], "--file") == 0) {
-        filename = argument_vector[2];
+    if (argc == 3 && strcmp(argv[1], "--file") == 0) {
+        filename = argv[2];
 
         FILE* read_file = fopen(filename, "r");
         if (read_file) {

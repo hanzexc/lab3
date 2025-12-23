@@ -1,6 +1,5 @@
 #include "sort.h"
 
-/* -------------------- SORT 1 -------------------- */
 void selection_sort_queue(Queue* q) {
     if (!q || !q->BegQ || !q->BegQ->next) return;
 
@@ -43,8 +42,6 @@ void selection_sort_queue(Queue* q) {
     q->BegQ = sorted_h;
     q->EndQ = sorted_t;
 }
-
-/* -------------------- QuickSort -------------------- */
 
 static void append_node(elem** h, elem** t, elem* node) {
     node->next = NULL;

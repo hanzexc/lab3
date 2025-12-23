@@ -1,5 +1,5 @@
-#ifndef IO_H
-#define IO_H
+#ifndef FILE_IO_H
+#define FILE_IO_H
 
 #include <stdio.h>
 #include "queue.h"

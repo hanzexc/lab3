@@ -8,7 +8,7 @@ typedef struct elem {
     struct elem* next;
 } elem;
 
-typedef struct Queue {
+typedef struct Queue {  
     elem* BegQ;
     elem* EndQ;
     size_t size;

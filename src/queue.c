@@ -70,7 +70,6 @@ int get_at(const Queue* q, size_t index, int* out_value) {
     *out_value = cur->data;
     return 1;
 }
-
 int set_at(Queue* q, size_t index, int value) {
     if (!q) return 0;
     if (index >= q->size) return 0;

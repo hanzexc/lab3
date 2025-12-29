@@ -2,7 +2,13 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <errno.h>
+#include <limits.h>
 
+void clean_input_buffer(){
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {
+    }
+}
 void chomp(char* s) {
     if (!s) return;
     char* p = s;
@@ -44,28 +50,41 @@ int read_line(FILE* f, char** out_line) {
 }
 
 int queue_from_line(Queue* q, const char* line) {
-    if (!q || !line) return 0;
-
+    if (!q || !line) return -1;
     int count = 0;
     const char* p = line;
 
     while (*p) {
-        while (*p && !isdigit((unsigned char)*p) && *p != '-' && *p != '+') p++;
-        if (!*p) break;
+        while (*p && isspace((unsigned char)*p)) p++;
+        if (!*p || *p == '\n') break;
 
         errno = 0;
         char* end = NULL;
         long v = strtol(p, &end, 10);
-        if (end == p) { p++; continue; }
-        if (errno == ERANGE) { p = end; continue; }
 
-        if (!enqueue(q, (int)v)) break;
+        if (end == p) {
+            clear_queue(q);
+            return -1;
+        }
+        if (*end && !isspace((unsigned char)*end)) {
+            clear_queue(q);
+            return -1;
+        }
+
+        if (errno == ERANGE || v < INT_MIN || v > INT_MAX) {
+            clear_queue(q);
+            return -1;
+        }
+
+        if (!enqueue(q, (int)v)) {
+            clear_queue(q);
+            return -1;
+        }
         count++;
-
         p = end;
     }
 
-    return count;
+    return (count > 0) ? count : -1;
 }
 
 void write_queue_line(FILE* f, const Queue* q) {

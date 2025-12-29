@@ -7,14 +7,12 @@
 #include <stdbool.h>
 #include <time.h>
 
-// Максимум чисел, которые читаем из файла для бенчмарка.
 #ifndef BENCH_MAX_N
-#define BENCH_MAX_N 131072
+#define BENCH_MAX_N 65536
 #endif
 
-// Стартовое n для экспоненциального роста (n *= 2).
 #ifndef BENCH_START_N
-#define BENCH_START_N 4096
+#define BENCH_START_N 2048
 #endif
 
 static bool load_prefix_queue(Queue* q, const char* filename, size_t max_n) {
@@ -40,7 +38,6 @@ static bool load_prefix_queue(Queue* q, const char* filename, size_t max_n) {
         }
         if (r == EOF) break;
 
-        // если встретился мусорный символ — двигаемся дальше
         int c = fgetc(f);
         if (c == EOF) break;
     }
@@ -72,7 +69,6 @@ bool run_benchmark(const char* input_filename, const char* output_filename) {
         return false;
     }
 
-    // Заголовок и в файл, и в консоль
     fprintf(results, "n selection sort quick sort\n");
     printf("n selection sort quick sort\n");
 
@@ -80,7 +76,6 @@ bool run_benchmark(const char* input_filename, const char* output_filename) {
         Queue test_q;
         init_queue(&test_q);
 
-        // берём первые n элементов
         elem* cur = full_data.BegQ;
         for (size_t i = 0; i < n && cur; i++) {
             if (!enqueue(&test_q, cur->data)) {
@@ -91,7 +86,6 @@ bool run_benchmark(const char* input_filename, const char* output_filename) {
             }
             cur = cur->next;
         }
-
         Queue copy1;
         if (!copy_queue(&copy1, &test_q)) {
             clear_queue(&test_q);
@@ -118,16 +112,13 @@ bool run_benchmark(const char* input_filename, const char* output_filename) {
         quicksort_queue(&copy2);
         clock_t end_qck = clock();
         double qck_time = (double)(end_qck - start_qck) / CLOCKS_PER_SEC;
-
-        // строка-результат и в файл, и в консоль
         fprintf(results, "%zu %.9f %.9f\n", n, sel_time, qck_time);
         printf("%zu %.9f %.9f\n", n, sel_time, qck_time);
 
         clear_queue(&copy1);
         clear_queue(&copy2);
         clear_queue(&test_q);
-
-        // экспоненциально: умножаем на 2
+        
         if (n > total / 2) break;
         if (n > (size_t)-1 / 2) break;
         n *= 2;

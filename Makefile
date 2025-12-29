@@ -1,4 +1,4 @@
-CC = cc
+CC = gcc
 BUILD_DIR = build
 SOURCES_DIR = src
 HEADER_DIR = include

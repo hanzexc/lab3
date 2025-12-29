@@ -1,7 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#include <stdlib.h>   // size_t
+#include <stdlib.h>
 
 typedef struct elem {
     int data;
